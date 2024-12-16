@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <h2>summary details</h2>
+    {% for i in cart %}
+    {{address.id}}
+    {% endfor %}
+    total:
+    {{total}}<br><br>
+    {{address.address_line1}}<br><br>
+    {{address.city}}<br><br>
+<form  action="http://127.0.0.1:8000/ecommerce/create_order/" method="post">{% csrf_token %}
+
+    <input type="hidden" name="address_id" value="{{address.id}}">
+    <label>ONLINE PAYMENT</label>
+    <script
+    src="https://checkout.stripe.com/checkout.js"
+    class="stripe-button"
+    data-key="{{ key }}"
+    data-amount="{{ stripetotal }}"
+    data-name="Online payment"
+    data-description="Online payment"
+    data-locale="auto"
+    data-currency="inr">
+</script>
+</form>
+</body>
+</html>

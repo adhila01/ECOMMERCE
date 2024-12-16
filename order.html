@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Your orders</h1>
+
+<ul>
+    {% for item in order %}
+    <li>
+        <h2>{{ item.pro_name }}</h2>
+        <p>Quantity:{{ item.quantity }}</p>
+        <p>Price:{{ item.price }}</p>
+        <p>Order Pic:<img src="{{ item.order_pic.url}}" alt="{{item.pro_name}}" height="200px" width="200px"></p>
+        <p>Ordered date:{{item.order.ordered_date}}</p>
+
+
+        {% if item.order_status %}
+         <a href="http://127.0.0.1:8000/ecommerce/order_cancel/{{item.id}}"> Cancel</a>
+        <p>Order status:<span class="ordered"><i class="fas fa-check-circle icon"></i> ordered</span></p>
+        {% else %}
+           <p>Order status:<span class="cancelled"><i class="fas fa-check-circle icon"></i> cancelled </span></p>
+        {% endif %}
+    </li>
+   {% endfor %}
+</ul>
+</body>
+</html>

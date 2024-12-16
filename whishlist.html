@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wishlist</title>
+    {% load static %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .product-card {
+            margin-bottom: 20px;
+        }
+        .product-img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 class="mt-5 mb-4">Wishlist</h1>
+
+    <div class="row">
+        {% for item in db %}
+        <div class="col-md-4 product-card">
+            <div class="card">
+                <img src="{{ item.item.proimg.url }}" class="card-img-top" alt="Product Image" style="height:200px;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ item.item.productname }}</h5>
+                    <p class="card-text">{{ item.item.desc }}</p>
+                    <form method="get" action="http://127.0.0.1:8000/eapp/addtocart/{{ item.item.id }}">
+                        <p class="card-text">Size
+                            <select name="size">
+                                {% for size in item.item.sizes %}
+                                <option value="{{ size }}">{{ size }}</option>
+                                {% endfor %}
+                            </select>
+                        </p>
+                        <p class="card-text">{{ item.price }}</p>
+                        <input type="submit" value="Add to cart" class="btn btn-primary">
+                    </form>
+                    <form method="post" action="http://127.0.0.1:8000/eapp/wishlistdelete/">
+                        {% csrf_token %}
+                        <input type="hidden" name="item_id" value="{{ item.item.id }}">
+                        <button type="submit" class="btn btn-danger">Remove from Wishlist</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+</body>
+</html>

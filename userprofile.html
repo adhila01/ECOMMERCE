@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            overflow-x: hidden; /* Hide horizontal scroll */
+        }
+        .container {
+            margin-top: 20px;
+            margin-left: 300px;
+            overflow-x: hidden; /* Hide horizontal scroll */
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #f0f0f0;
+            position: fixed;
+            top: 50px;
+            left: 0;
+            height: 100%;
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            padding: 10px;
+        }
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #333;
+        }
+        /* Media query for responsiveness */
+        @media screen and (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                position: static;
+            }
+            .container {
+                margin-left: 0; /* Adjust margin for small screens */
+            }
+        }
+        .main-content {
+            flex: 1;
+            padding: 50px;
+            background-color: #fff;
+        }
+        .navbar {
+            overflow: hidden;
+            background-color: #333;
+            position: fixed;
+            top: 0;
+            width: 100%;
+        }
+        .navbar {
+            background-color: #333;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            transition: top 0.3s; /* Add transition effect */
+            z-index: 1000;
+            }
+        .navbar.fixed-top {
+            top: -50px; /* Move navbar up */
+        }
+        /* Style for cards */
+        .card {
+            width: 14rem;
+            margin-bottom: 20px;
+        }
+        /* Style for buttons */
+        .card-body .btn {
+            width: 100%; /* Make buttons full width */
+            margin-top: 10px; /* Add some space between buttons */
+        }
+    </style>
+</head>
+<body>
+<script >
+        function filterItems() {
+
+            var searchQuery = document.getElementById('searchInput').value.toUpperCase();
+
+            var cards = document.getElementsByClassName('card');
+
+            for (var i = 0; i < cards.length; i++) {
+                var title = cards[i].getElementsByClassName('card-title')[0];
+
+                if (title.innerText.toUpperCase().indexOf(searchQuery) > -1) {
+                    cards[i].style.display = ""; // Show the card
+                } else {
+                    cards[i].style.display = "none"; // Hide the card
+                }
+            }
+        }
+    </script>
+
+<div class="container bg-success">
+    <div class="sidebar">
+        <ul>
+            <img src="{{data.propic.url}}" alt="Generic placeholder image" class="img-fluid" style="width: 180px; border-radius: 10px;">
+            <h3 class="mb-1">{{data.fullname}}</h3>
+            <li><a href="http://127.0.0.1:8000/ecommerce/index/">Home</a></li>
+            <li><a href="http://127.0.0.1:8000/ecommerce/cartdisplay/">View Cart</a></li>
+            <li><a href="http://127.0.0.1:8000/ecommerce/order_view/">History</a></li>
+            <li><a href="#">Contact</a></li>
+            <a href="http://127.0.0.1:8000/ecommerce/usersingleview/" class="btn btn-primary"> VIEW DETAILS</a>
+        </ul>
+    </div>
+</div>
+
+<nav class="navbar navbar-light bg-light">
+    <div class="container-fluid">
+        <form class="d-flex">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchInput" onkeyup="filterItems()">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+        <div class="category">
+            <a class="navbar-brand" href="?category=all">ALL</a>
+            <a class="navbar-brand" href="?category=male">Men</a>
+            <a class="navbar-brand" href="?category=female">Women</a>
+            <a class="navbar-brand" href="?category=kids">Kids</a>
+        </div>
+        <a href="http://127.0.0.1:8000/eapp/logout/" class="navbar-brand" type="button">logout</a>
+    </div>
+
+
+</nav>
+
+<div class="container">
+    <div class="row">
+        {% for i in db %}
+        <div class="col-sm-4"> <!-- Each card will take up 4 columns on small screens -->
+            <div class="card">
+                <img src="{{i.proimg.url}}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">{{i.productname}}</h5>
+                    <p class="card-text">{{i.desc}}</p>
+                    <form method="get" action="http://127.0.0.1:8000/ecommerce/addtocart/{{i.id}}">
+                    <p class="card-text">Size
+                        <select name="size">
+                            {% for j in i.sizes %}
+                            <option value="{{ j }}">{{ j }}</option>
+                            {% endfor %}
+                        </select>
+                    </p>
+                        <p class="card-text">{{i.price}}</p>
+                        <input type="submit" value="Add to cart" class="btn btn-primary">
+                    </form>
+
+                    <a href="http://127.0.0.1:8000/ecommerce/wishlist/{{i.id}}" type="button" class="btn btn-primary"><i class="far fa-heart"></i> Wishlist</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+</body>
+</html>

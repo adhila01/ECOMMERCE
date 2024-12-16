@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .custom-textarea {
+  width: 300px; /* Adjust width as needed */
+  height: 150px; /* Adjust height as needed */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  resize: none; /* Prevent resizing */
+  outline: none; /* Remove default outline */
+}
+    </style>
+</head>
+<body>
+<form method="post" enctype="multipart/form-data">{% csrf_token%}
+    <label>product</label>
+    <input type="file" name="productimg"><br><br>
+    <label>Product name</label>
+    <input type="text"  name="product" class="input-box"><br><br>
+    <label>Price</label>
+    <input type="number"  name="price" class="input-box"><br><br>
+    <label>sizes</label>
+    <input type="text"  name="size" class="input-box"><br><br>
+    <select name="category">
+        <option>....select category</option>
+        <option value="male">male</option>
+        <option value="female">female</option>
+        <option value="kids">kids</option>
+    </select>
+    <label>Description</label><br><br>
+    <textarea  name="description" class="custom-textarea" placeholder="Enter description......."></textarea>
+
+    <input type="submit">
+</form>
+</body>
+</html>
